@@ -46,6 +46,7 @@ export default class View {
         var audio = new Audio(); 
         audio.src = 'levelup.mp3'; 
         audio.autoplay = true; 
+        audio.volume = 0.4;
     }
     
     playHellMusic(check) {
