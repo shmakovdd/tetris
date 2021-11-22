@@ -1,0 +1,79 @@
+body, html, .wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.wrapper {
+    background: url('./Tetris_VHS_abstract_minimalism_colorful-1461929.jpg!d') no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tetris_wrapper {
+    border: 2px solid white;
+    border-radius: 5px;
+    /* overflow: hidden; */
+    background-color: rgba(0, 0, 0, .85);
+    width: 320px;
+    height: 640px;
+    position: relative;
+}
+
+#example {
+    width: 100%;
+}
+
+.stats {
+    color: red;
+    position: absolute;
+    left: 135%;
+    top: 0;
+    text-align: center;
+    padding: 10px;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 20px;
+
+}
+
+.row:last-child {
+    margin: 0;
+}
+
+.modal {
+    position: absolute;
+    z-index: 50000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column
+}
+
+#startButton {
+    font-family: 'Press Start 2P', cursive;
+    color: red;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.paused {
+    display: none;
+    font-size: 40px;
+    color: red;
+    
+}
