@@ -12,6 +12,7 @@ export default class View {
         this.level = document.querySelector('[data-level]')
         this.paused = document.querySelector('.paused')
         this.hellMusic = new Audio(); 
+        this.achiev = document.querySelector('.achiev')
     }
 
     renderScore(score = 0) {
@@ -112,8 +113,26 @@ export default class View {
         this.level.innerHTML = level
     }
 
-    chooseColor() {
-        
+    displayAchiev(achievName) {
+        let achievTitle = document.querySelector('.achiev__name')
+        let achievContent = document.querySelector('.achiev__descr')
+        switch (achievName) {
+            case 'vadim':
+                achievTitle.innerHTML = 'Тест на Вадима'
+                achievContent.innerHTML = 'Пройти первый уровень'
+            break;    
+            case 'doomguy': 
+                achievTitle.innerHTML = 'Добро пожаловать в АД'
+                achievContent.innerHTML = 'Добраться до последнего уровня'
+            break;
+        }
+
+        this.achiev.classList.toggle('achiev-shown')
+        setTimeout(() => {
+            if(this.achiev.classList.contains('achiev-shown')) {
+                this.achiev.classList.remove('achiev-shown')
+            }
+        }, 5000)
     }
 
     renderPlayfield(playfield, mode) {

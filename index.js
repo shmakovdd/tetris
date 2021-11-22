@@ -112,6 +112,17 @@ class Controller {
                 view.changeBack('hellpaper.jpg')
                 view.changeTitle('hell')
             }
+            
+            switch (level) {
+                case 2:
+                    view.displayAchiev('vadim')
+                    break;
+            
+                case 9:
+                    view.displayAchiev('doomguy')
+                    break;
+            }
+
             if(game.pieceCount == 95) {
                 view.playJustToSuffer()
             }

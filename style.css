@@ -1,9 +1,14 @@
 body, html, .wrapper {
     width: 100%;
+    font-family: 'Press Start 2P', cursive;
+    overflow: hidden;
+}
+
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Press Start 2P', cursive;
 }
+
 
 .wrapper {
     background-image: url('./tetrispaper.jpg!d');
@@ -77,4 +82,34 @@ body, html, .wrapper {
     font-size: 40px;
     color: red;
     
+}
+
+.achiev {
+    position: absolute;
+    right: 2%;
+    bottom: -50%;
+    padding: 15px;
+    background-color: azure;
+    transition: .5s all
+}
+
+.achiev__title {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.achiev__content {
+    border: 3px solid black;
+    padding: 5px;
+}
+
+.achiev__name {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.achiev-shown {
+    bottom: 0;
+    transition: .5s all
+
 }
