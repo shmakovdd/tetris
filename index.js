@@ -13,6 +13,7 @@ class Controller {
         })
         game.addEventListener('lose', () => {
             this.lose = true
+            view.playHellMusic('stop')
             view.playGameOverSound()
             clearInterval(this.interval)
             view.showGameOver(game.score)
@@ -24,7 +25,11 @@ class Controller {
             if(e.target == view.startButton) {
                 document.addEventListener('keydown', this.spaceKeyBind)
                 document.addEventListener('keydown', this.keyBinds)
-                if(this.lose) view.closeGameOver()
+                if(this.lose) {
+                    view.closeGameOver()
+                    view.changeBack('tetrispaper.jpg!d')
+                    view.changeTitle('normal')
+                }
                 view.startModalOff()
                 this.startGame()
             }
@@ -41,19 +46,35 @@ class Controller {
             switch(e.code) {
                 case 'ArrowDown': 
                     game.movePieceDown()
-                    view.renderPlayfield(game.refreshField())
+                    if(game.level >= 9) {
+                        view.renderPlayfield(game.refreshField(), 'hell')
+                    } else {
+                        view.renderPlayfield(game.refreshField())
+                    } 
                     break
                 case 'ArrowRight':
                     game.movePieceRight()
-                    view.renderPlayfield(game.refreshField())
+                    if(game.level >= 9) {
+                        view.renderPlayfield(game.refreshField(), 'hell')
+                    } else {
+                        view.renderPlayfield(game.refreshField())
+                    } 
                     break
                 case 'ArrowLeft':
                     game.movePieceLeft()
-                    view.renderPlayfield(game.refreshField())
+                    if(game.level >= 9) {
+                        view.renderPlayfield(game.refreshField(), 'hell')
+                    } else {
+                        view.renderPlayfield(game.refreshField())
+                    } 
                     break
                 case 'ArrowUp':
                     game.rotatePiece()
-                    view.renderPlayfield(game.refreshField())
+                    if(game.level >= 9) {
+                        view.renderPlayfield(game.refreshField(), 'hell')
+                    } else {
+                        view.renderPlayfield(game.refreshField())
+                    } 
                     break
             }
     }
@@ -75,17 +96,25 @@ class Controller {
     startGame() {
         view.renderScore(game.score)
         view.renderDifficulty(game.level)
-        view.renderPlayfield(game.refreshField(), game.activePiece.pieceName)
+        view.renderPlayfield(game.refreshField())
         this.changeInterval(game.period, game.level)
 
     }
     
     newLevel(count, period, level) {
-        if(game.pieceCount == count && game.pieceCount !== 81) {
+        if(game.pieceCount == count && game.pieceCount !== 125) {
             view.playSound()
+
             clearInterval(this.interval)
             game.period = period;
-
+            if(level >= 9) {
+                view.playHellMusic('play')
+                view.changeBack('hellpaper.jpg')
+                view.changeTitle('hell')
+            }
+            if(game.pieceCount == 95) {
+                view.playJustToSuffer()
+            }
             game.level = level;
             view.renderDifficulty(game.level)
             this.changeInterval(game.period, game.level)
@@ -93,7 +122,11 @@ class Controller {
             game.movePieceDown()
             console.log(game.period);
             console.log(game.pieceCount)
-            view.renderPlayfield(game.refreshField(), game.activePiece.pieceName)
+            if(game.level >= 9) {
+                view.renderPlayfield(game.refreshField(), 'hell')
+            } else {
+                view.renderPlayfield(game.refreshField())
+            } 
     }
 
     changeInterval(period, level) {
@@ -124,12 +157,22 @@ class Controller {
         }
         if(game.pieceCount == 60 || level == 6) {
             this.interval = setInterval(function() {
-               this.newLevel(80, 380, 7)
+               this.newLevel(80, 350, 7)
             }.bind(this), period)
         }
         if(game.pieceCount == 80 || level == 7) {
             this.interval = setInterval(function() {
-               this.newLevel(81, 330, 8)
+               this.newLevel(95, 300, 8)
+            }.bind(this), period)
+        }
+        if(game.pieceCount == 95 || level == 8) {
+            this.interval = setInterval(function() {
+               this.newLevel(110, 260, 9)
+            }.bind(this), period)
+        }
+        if(game.pieceCount == 110 || level == 9) {
+            this.interval = setInterval(function() {
+               this.newLevel(125, 260, 9)
             }.bind(this), period)
         }
     }

@@ -6,7 +6,8 @@ body, html, .wrapper {
 }
 
 .wrapper {
-    background: url('./Tetris_VHS_abstract_minimalism_colorful-1461929.jpg!d') no-repeat;
+    background-image: url('./tetrispaper.jpg!d');
+    background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
     display: flex;
