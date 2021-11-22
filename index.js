@@ -102,16 +102,17 @@ class Controller {
     }
     
     newLevel(count, period, level) {
-        if(game.pieceCount == count && game.pieceCount !== 125) {
+        if(game.pieceCount == count && game.pieceCount !== 145) {
             view.playSound()
 
             clearInterval(this.interval)
             game.period = period;
-            if(level >= 9) {
+            if(level == 9) {
                 view.playHellMusic('play')
                 view.changeBack('hellpaper.jpg')
                 view.changeTitle('hell')
             }
+
             
             switch (level) {
                 case 2:
@@ -131,8 +132,6 @@ class Controller {
             this.changeInterval(game.period, game.level)
         }
             game.movePieceDown()
-            console.log(game.period);
-            console.log(game.pieceCount)
             if(game.level >= 9) {
                 view.renderPlayfield(game.refreshField(), 'hell')
             } else {
@@ -183,7 +182,12 @@ class Controller {
         }
         if(game.pieceCount == 110 || level == 9) {
             this.interval = setInterval(function() {
-               this.newLevel(125, 260, 9)
+               this.newLevel(125, 210, 10)
+            }.bind(this), period)
+        }
+        if(game.pieceCount == 125 || level == 10) {
+            this.interval = setInterval(function() {
+               this.newLevel(145, 180, 11)
             }.bind(this), period)
         }
     }

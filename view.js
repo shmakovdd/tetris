@@ -110,6 +110,8 @@ export default class View {
     renderDifficulty(level = 0) {
         level = level == 8 ? 'STILL TOO EASY?' : level
         level = level == 9 ? 'DIE HARD' : level
+        level = level == 10 ? 'INSANE' : level
+        level = level == 11 ? 'BEYOND GOOD AND EVIL' : level
         this.level.innerHTML = level
     }
 
