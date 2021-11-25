@@ -1,8 +1,9 @@
 export default class View {
     constructor(row, columns) {
         this.wrapper = document.querySelector('.wrapper')
+        this.tetrisWrapper = document.querySelector('.tetris_wrapper')
         this.title = document.querySelector('.title')
-        this.canvas = document.querySelector('#example')
+        this.canvas = document.querySelector('#playfield')
         this.context = this.canvas.getContext('2d')
         this.row = row;
         this.columns = columns;
@@ -13,6 +14,31 @@ export default class View {
         this.paused = document.querySelector('.paused')
         this.hellMusic = new Audio(); 
         this.achiev = document.querySelector('.achiev')
+        this.nextBlocksField = document.querySelector('#next-blocks')
+        this.nextBlocksFieldCtx = this.nextBlocksField.getContext('2d')
+        this.holdField = document.querySelector('#hold')
+        this.holdFieldCtx = this.holdField.getContext('2d')
+    }
+
+    changeHoldBorder(state) {
+        switch (state) {
+            case true:
+                this.holdField.classList.add('red_border')
+                setInterval(() => this.holdField.classList.remove('red_border'), 1000)
+                break;
+        
+            case false:
+                this.holdField.classList.add('green_border')
+                setInterval(() => this.holdField.classList.remove('green_border'), 500)
+                break;
+        }
+    }
+
+    changeWrapperBorder() {
+        this.tetrisWrapper.classList.toggle('level-up')
+        if (this.tetrisWrapper.classList.contains('level-up')) {
+            setInterval(() => this.tetrisWrapper.classList.remove('level-up'), 500)
+        }
     }
 
     renderScore(score = 0) {
@@ -45,8 +71,8 @@ export default class View {
     playSound() {
         var audio = new Audio(); 
         audio.src = 'levelup.mp3'; 
-        audio.autoplay = true; 
         audio.volume = 0.4;
+        audio.autoplay = true; 
     }
     
     playHellMusic(check) {
@@ -64,6 +90,7 @@ export default class View {
         }
 
     }
+
 
     playOnScoreIncrease() {
         var audio = new Audio(); 
@@ -138,38 +165,141 @@ export default class View {
         }, 5000)
     }
 
+    renderHold(field) {
+        this.holdFieldCtx.clearRect(0,0, 180, 180)
+        
+        for (let y = 0; y < field[y].length; y++) {
+            for (let x = 0; x < field.length; x++) {
+                switch(field[x][y]) {
+                    case 'S':
+                        this.renderHoldBlock('#f60000', y, x)
+                        break
+                    case 'Z':
+                        this.renderHoldBlock('#67b321', y, x)
+                        break
+                    case 'I':
+                        this.renderHoldBlock('#01e3fb', y, x)
+                        break
+                    case 'T':
+                        this.renderHoldBlock('#a10297', y, x)
+                        break  
+                    case 'O':
+                        this.renderHoldBlock('#faff01', y, x)
+                        break
+                    case 'L':
+                        this.renderHoldBlock('#fe8c03', y, x)
+                        break  
+                    case 'J':
+                        this.renderHoldBlock('#ff52ba', y, x)
+                        break
+                }
+            }
+        }
+    }
+
+    renderSecondfield(field) {
+        this.nextBlocksFieldCtx.clearRect(0,0, 200, 400)
+        
+        for (let y = 0; y < field[y].length; y++) {
+            for (let x = 0; x < field.length; x++) {
+                switch(field[x][y]) {
+                    case 'S':
+                        this.renderSecondFieldBlock('#f60000', y, x)
+                        break
+                    case 'Z':
+                        this.renderSecondFieldBlock('#67b321', y, x)
+                        break
+                    case 'I':
+                        this.renderSecondFieldBlock('#01e3fb', y, x)
+                        break
+                    case 'T':
+                        this.renderSecondFieldBlock('#a10297', y, x)
+                        break  
+                    case 'O':
+                        this.renderSecondFieldBlock('#faff01', y, x)
+                        break
+                    case 'L':
+                        this.renderSecondFieldBlock('#fe8c03', y, x)
+                        break  
+                    case 'J':
+                        this.renderSecondFieldBlock('#ff52ba', y, x)
+                        break
+                }
+            }
+        }
+    }
+
     renderPlayfield(playfield, mode) {
         if (playfield == undefined) return
         this.context.clearRect(0, 0, 320, 640)
 
-        for (let y = 0; y < playfield.length; y++) {
-            for (let x = 0; x < playfield[y].length; x++) {
-                switch(playfield[y][x]) {
+        let pieceColor
+
+        for (let y = 0; y < playfield[y].length; y++) {
+            for (let x = 0; x < playfield.length; x++) {
+                switch(playfield[x][y]) {
                     case 'S':
-                        this.renderBlockColor('#f60000', x, y)
+                        this.renderBlockColor('#f60000', y, x)
+                        pieceColor = '#f60000'
                         break
                     case 'Z':
-                        this.renderBlockColor('#67b321', x, y)
+                        this.renderBlockColor('#67b321', y, x)
+                        pieceColor = '#67b321'
                         break
                     case 'I':
-                        this.renderBlockColor('#01e3fb', x, y)
+                        this.renderBlockColor('#01e3fb', y, x)
+                        pieceColor = '#01e3fb'
                         break
                     case 'T':
-                        this.renderBlockColor('#a10297', x, y)
+                        this.renderBlockColor('#a10297', y, x)
+                        pieceColor = '#a10297'
                         break  
                     case 'O':
-                        this.renderBlockColor('#faff01', x, y)
+                        this.renderBlockColor('#faff01', y, x)
+                        pieceColor = '#faff01'
                         break
                     case 'L':
-                        this.renderBlockColor('#fe8c03', x, y)
+                        this.renderBlockColor('#fe8c03', y, x)
+                        pieceColor = '#fe8c03'
                         break  
                     case 'J':
-                        this.renderBlockColor('#ff52ba', x, y)
-                        break      
+                        this.renderBlockColor('#ff52ba', y, x)
+                        pieceColor = '#ff52ba'
+                        break
+                    case 2: 
+                    this.renderFantomBlock(pieceColor, y, x)
+                        break          
                 }
                 if(mode && playfield[y][x]) this.renderBlockColor('red', x, y)
             }
         }
+    }
+
+    renderHoldBlock (blockColor, x, y) {
+        this.holdFieldCtx.fillStyle = `${blockColor}`
+        this.holdFieldCtx.shadowColor = `${blockColor}`;
+        this.holdFieldCtx.strokeStyle = 'black'
+        this.holdFieldCtx.shadowBlur = 10;
+        
+        this.holdFieldCtx.strokeRect( x * 30, y * 30, 30, 30)
+        this.holdFieldCtx.fillRect( x * 30, y * 30, 30, 30)
+    }
+
+    renderSecondFieldBlock (blockColor, x, y) {
+        this.nextBlocksFieldCtx.fillStyle = `${blockColor}`
+        this.nextBlocksFieldCtx.shadowColor = `${blockColor}`;
+        this.nextBlocksFieldCtx.strokeStyle = 'black'
+        this.nextBlocksFieldCtx.shadowBlur = 10;
+        
+        this.nextBlocksFieldCtx.strokeRect( x * 20, y * 20, 20, 20)
+        this.nextBlocksFieldCtx.fillRect( x * 20, y * 20, 20, 20)
+    }
+
+    renderFantomBlock(color, x , y) {
+        this.context.strokeStyle = `${color}`
+        this.context.lineWidth = '2px';
+        this.context.strokeRect( x * 32, y * 32, 32, 32)
+
     }
 
     renderBlockColor(blockColor, x, y) {
