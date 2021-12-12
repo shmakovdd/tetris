@@ -158,3 +158,34 @@ body, html, .wrapper {
     transition: .5s all
 
 }
+
+.records {
+    position: absolute;
+    width: 17%;
+    bottom: 61%;
+    left: 5%;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 2px solid white;
+    color: red;
+    padding: 15px;
+}
+
+.records__item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 15px;
+}
+
+#nickname {
+    padding: 15px;
+    background-color: #fff;
+    color: red;
+    border-radius: 10px;
+}

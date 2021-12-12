@@ -4,6 +4,7 @@ export default class Game extends EventTarget {
         this.event = new CustomEvent("score")
         this.loseEvent = new CustomEvent("lose")
         this.score = 0
+        this.name = 'unknown'
         this.pieceCount = 0
         this.period = 900
         this.lines = []
@@ -83,7 +84,15 @@ export default class Game extends EventTarget {
         this.holdField = this.createField(6, 6)
         this.hold = this.createHold()
         this.isHold = false
+        this.db = this.sendRequest('GET', 'https://blooming-crag-85774.herokuapp.com/api/score')
     }   
+
+    get playerData() {
+        return {
+            name: this.name,
+            score: +this.score
+        }
+    }
 
     calculateLevelsAndPieceCount() {
         let arr = []
@@ -96,6 +105,23 @@ export default class Game extends EventTarget {
         }
 
         return arr
+    }
+
+    sendRequest(method, url, body = null) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+
+            xhr.open(method, url)
+
+            xhr.responseType = 'json'
+            xhr.setRequestHeader('Content-Type', 'application/json')
+
+            xhr.onload = () => {
+               resolve(xhr.response)
+            }
+        
+            xhr.send(JSON.stringify(body))
+        })
     }
 
     createPiecesIndexArray() {

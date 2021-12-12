@@ -10,6 +10,7 @@ export default class View {
         this.score = document.querySelector('[data-score]')
         this.startButton = document.querySelector('#startButton')
         this.modal = document.querySelector('.modal')
+        this.form = document.querySelector('#nickname')
         this.level = document.querySelector('[data-level]')
         this.paused = document.querySelector('.paused')
         this.hellMusic = new Audio(); 
@@ -18,6 +19,8 @@ export default class View {
         this.nextBlocksFieldCtx = this.nextBlocksField.getContext('2d')
         this.holdField = document.querySelector('#hold')
         this.holdFieldCtx = this.holdField.getContext('2d')
+        this.inputNickname = document.querySelector('.input-nickname')
+        this.recordsList = document.querySelector('.records__list')
     }
 
     changeHoldBorder(state) {
@@ -41,12 +44,30 @@ export default class View {
         }
     }
 
+    renderLeadersboard(data) {
+        this.recordsList.innerHTML=''
+        for (let i = 0; i < data.length; i++) {
+            let $li = document.createElement('div')
+            $li.classList.add('records__item')
+            let $name = document.createElement('div')
+            $name.classList.add('nickname')
+            $name.innerText = data[i].name
+            $li.append($name)
+            let $score = document.createElement('div')
+            $score.classList.add('score')
+            $score.innerText = data[i].score
+            $li.append($score)
+            this.recordsList.append($li)
+        }
+    }
+
     renderScore(score = 0) {
         this.score.innerHTML = score
     }
 
     startModalOff() {
         this.modal.style.display = 'none'
+        this.form.style.display = 'none'
         this.startButton.style.display = 'none'
     }
 

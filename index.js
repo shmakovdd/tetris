@@ -7,12 +7,15 @@ class Controller {
         this.isLose = false
         this.spaceKeyBind = this.spaceKeyBind.bind(this)
         this.keyBinds = this.keyBinds.bind(this)
+        this.getLeadersboardInfo()
         view.renderScore(game.score)
+        
         game.addEventListener('score', () => {
             view.renderScore(game.score)
             view.playOnScoreIncrease()
         })
         game.addEventListener('lose', () => {
+            this.sendPlayerScore()
             this.isLose = true
             view.playHellMusic('stop')
             view.playGameOverSound()
@@ -22,6 +25,10 @@ class Controller {
             document.removeEventListener('keydown', this.spaceKeyBind)
         })
 
+        view.inputNickname.addEventListener('change', e => {
+            let nickname = e.target.value;
+            game.name = nickname
+        })
         document.addEventListener('click', e => {
             if(e.target == view.startButton) {
                 document.addEventListener('keydown', this.spaceKeyBind)
@@ -44,6 +51,21 @@ class Controller {
         })
     }
 
+    async sendPlayerScore() {
+        await game.sendRequest('POST', 'https://blooming-crag-85774.herokuapp.com/api/score', game.playerData)
+        let refreshBoard = await game.sendRequest('GET', 'https://blooming-crag-85774.herokuapp.com/api/score')
+        game.db = refreshBoard
+        console.log(game.db)
+        view.renderLeadersboard(game.db);
+    }
+
+    async getLeadersboardInfo() {
+        game.db.then(
+            data => {
+                view.renderLeadersboard(data);
+            }
+        )
+    }
 
     spaceKeyBind(e) {
         if (e.code == 'Space') {
